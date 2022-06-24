@@ -54,6 +54,11 @@
 提供数据的写入和随机读取能力。
 
 
+### 线程安全问题
+
+`MappedFile` 和 `MappedFileQueue` 都不是线程安全的，但是 `IndexFile` 和 `CommitLog` 是线程安全的。
+在写入时，都是先加锁，再写入的
+读取时，因为 `MappedFile` 底层都会通过 `ByteBuffer.slice` 创建一个用于本次读取的视图，因此从底层，读就是线程安全的。
 ### 如何使用
 
 运行 `MessageStoreTest`
